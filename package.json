@@ -1,7 +1,7 @@
 {
   "name": "locai-chat",
   "type": "module",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -10,7 +10,19 @@
     "biome": "biome check --write"
   },
   "dependencies": {
-    "astro": "^5.13.5"
+    "@astrojs/react": "^4.3.0",
+    "@fontsource-variable/onest": "^5.2.9",
+    "@heroui/react": "2.8.3",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/vite": "4.1.12",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "astro": "5.13.5",
+    "framer-motion": "12.23.12",
+    "postcss": "^8.5.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwindcss": "4.1.12"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2"
