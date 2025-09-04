@@ -17,6 +17,9 @@ importers:
       '@heroui/react':
         specifier: 2.8.3
         version: 2.8.3(@types/react@19.1.12)(framer-motion@12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(tailwindcss@4.1.12)
+      '@react-aria/visually-hidden':
+        specifier: ^3.8.27
+        version: 3.8.27(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@tailwindcss/postcss':
         specifier: ^4.1.12
         version: 4.1.12
@@ -47,10 +50,16 @@ importers:
       tailwindcss:
         specifier: 4.1.12
         version: 4.1.12
+      usehooks-ts:
+        specifier: ^3.1.1
+        version: 3.1.1(react@19.1.1)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.2.2
         version: 2.2.2
+      '@iconify/react':
+        specifier: ^6.0.1
+        version: 6.0.1(react@19.1.1)
 
 packages:
 
@@ -960,6 +969,14 @@ packages:
       '@heroui/theme': '>=2.4.17'
       react: '>=18 || >=19.0.0-rc.0'
       react-dom: '>=18 || >=19.0.0-rc.0'
+
+  '@iconify/react@6.0.1':
+    resolution: {integrity: sha512-fCocnAfiGXjrA0u7KkS3W/OQHNp9LRFICudvOtxmS3Mf7U92aDhP50wyzRbobZli51zYt9ksZ9g0J7H586XvOQ==}
+    peerDependencies:
+      react: '>=16'
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2377,6 +2394,9 @@ packages:
     resolution: {integrity: sha512-xi6IyHML+c9+Q3W0S4fCQJOym42pyurFiJUHEcEyHS0CeKzia4yZDEsLlqOFykxOdHpNy0NmvVO31vcSqAxJCg==}
     engines: {node: '>= 12.0.0'}
 
+  lodash.debounce@4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
@@ -3002,6 +3022,12 @@ packages:
     resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  usehooks-ts@3.1.1:
+    resolution: {integrity: sha512-I4diPp9Cq6ieSUH2wu+fDAVQO43xwtulo+fKEidHUwZPnYImbtkTjzIJYcDcJqxgmX31GVqNFURodvcgHcW0pA==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17 || ^18 || ^19 || ^19.0.0-rc
 
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
@@ -4489,6 +4515,13 @@ snapshots:
       '@react-aria/focus': 3.21.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
+
+  '@iconify/react@6.0.1(react@19.1.1)':
+    dependencies:
+      '@iconify/types': 2.0.0
+      react: 19.1.1
+
+  '@iconify/types@2.0.0': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
@@ -6277,6 +6310,8 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.30.1
       lightningcss-win32-x64-msvc: 1.30.1
 
+  lodash.debounce@4.0.8: {}
+
   longest-streak@3.1.0: {}
 
   lru-cache@10.4.3: {}
@@ -7112,6 +7147,11 @@ snapshots:
 
   use-sync-external-store@1.5.0(react@19.1.1):
     dependencies:
+      react: 19.1.1
+
+  usehooks-ts@3.1.1(react@19.1.1):
+    dependencies:
+      lodash.debounce: 4.0.8
       react: 19.1.1
 
   vfile-location@5.0.3:

@@ -1,8 +1,22 @@
 ---
+import PromptInputFullLineWithBottomActions from "@components/inputs/PromptInputFullLineWithBottomActions";
 import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout
 	title="LocAI Chat"
 	description="LocAI Chat - Offline Local Multi-model ChatBot with AI"
-/>
+>
+	<div class="flex h-screen max-h-[calc(100vh-140px)] w-full">
+		<div class="flex h-full w-full items-center justify-center">
+			<div class="flex w-full max-w-xl flex-col items-center gap-8">
+				<h1 class="text-default-foreground text-3xl leading-9 font-bold">
+					LocAI Chat
+				</h1>
+				<div class="flex w-full flex-col gap-4">
+					<PromptInputFullLineWithBottomActions client:visible />
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>

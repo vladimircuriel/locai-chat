@@ -19,6 +19,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
       "@models/*": [
         "src/lib/models/*"
       ],
