@@ -26,7 +26,7 @@ const SUGGESTIONS = [
   },
   {
     id: 'help-write',
-    label: 'Help me write',
+    label: 'Write a doc',
     icon: 'solar:pen-2-outline',
   },
   {

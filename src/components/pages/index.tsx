@@ -3,64 +3,22 @@ import PromptInputFullLineWithBottomActions from '@components/inputs/PromptInput
 import PromptInputWithActions from '@components/inputs/PromptInputWithActions'
 import SidebarWithConversations from '@components/navigation/sidebar/SidebarWithConversations'
 import { ScrollShadow } from '@heroui/scroll-shadow'
-import { getAmountOfConversations, getConversationById } from '@lib/db/conversation.db'
-import { getMessagesByConversation } from '@lib/db/message.db'
-import type { Conversation } from '@lib/models/conversation.model'
-import type { Message } from '@lib/models/message.model'
-import { useEffect, useState } from 'react'
-
-export function useIndexPage() {
-  const [amountOfConversations, setAmountOfConversations] = useState<number>(0)
-  const [currentConversation, setCurrentConversation] = useState<Conversation | undefined>(
-    undefined,
-  )
-  const [conversationMessages, setConversationMessages] = useState<Message[]>([])
-
-  const handleSetCurrentConversation = async (conversationId: string) => {
-    if (currentConversation?.id === conversationId) return
-
-    const conversation = await getConversationById(conversationId)
-    setCurrentConversation(conversation)
-  }
-
-  useEffect(() => {
-    async function fetchConversationMessages() {
-      if (!currentConversation) {
-        setConversationMessages([])
-        return
-      }
-
-      const messages = await getMessagesByConversation(currentConversation.id)
-      setConversationMessages(messages)
-    }
-
-    fetchConversationMessages()
-  }, [currentConversation])
-
-  useEffect(() => {
-    async function fetchAmountOfConversations() {
-      const amount = await getAmountOfConversations()
-      setAmountOfConversations(amount)
-    }
-    fetchAmountOfConversations()
-  }, [])
-
-  return {
-    amountOfConversations,
-    setAmountOfConversations,
-    handleSetCurrentConversation,
-    currentConversation,
-    conversationMessages,
-  }
-}
+import useIndexPage from '@lib/hooks/useIndexPage'
 
 export default function Index() {
   const {
     amountOfConversations,
+    conversations,
     setAmountOfConversations,
     handleSetCurrentConversation,
+    handleCreateNewConversation,
+    handleDeleteConversation,
+    handleUserSendMessage,
+    handleAddConversation,
     currentConversation,
     conversationMessages,
+    engineState,
+    downloadProgress,
   } = useIndexPage()
 
   return (
@@ -73,6 +31,10 @@ export default function Index() {
               <div className="flex w-full flex-col gap-4">
                 <PromptInputFullLineWithBottomActions
                   setAmountOfConversations={setAmountOfConversations}
+                  amountOfConversations={amountOfConversations}
+                  handleSetCurrentConversation={handleSetCurrentConversation}
+                  handleUserSendMessage={handleUserSendMessage}
+                  handleAddConversation={handleAddConversation}
                 />
               </div>
             </div>
@@ -84,6 +46,9 @@ export default function Index() {
           <SidebarWithConversations
             setAmountOfConversations={setAmountOfConversations}
             handleSetCurrentConversation={handleSetCurrentConversation}
+            handleCreateNewConversation={handleCreateNewConversation}
+            handleDeleteConversation={handleDeleteConversation}
+            conversations={conversations}
             classNames={{
               header: 'min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden',
             }}
@@ -95,14 +60,26 @@ export default function Index() {
                 </div>
               )}
               {conversationMessages.length > 0 && (
-                <ScrollShadow className="flex h-full max-h-[75vh] flex-col gap-6 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8">
+                <ScrollShadow className="flex h-full max-h-[75vh] flex-col gap-2.5 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8">
                   {conversationMessages.map((conversationMessage) => (
                     <MessagingChatMessage key={conversationMessage.id} {...conversationMessage} />
                   ))}
                 </ScrollShadow>
               )}
               <div className="mt-auto flex max-w-full flex-col gap-2">
-                <PromptInputWithActions />
+                {engineState?.isDownloading && (
+                  <div className="absolute top-4 left-1/2 z-10 flex -translate-x-1/2 transform items-center gap-2 rounded-full bg-default-200/70 px-4 py-2 text-default-600 shadow-md">
+                    <span className="text-small font-medium leading-5">
+                      Downloading model... {downloadProgress}
+                    </span>
+                  </div>
+                )}
+                <PromptInputWithActions
+                  currentConversation={currentConversation}
+                  handleSetCurrentConversation={handleSetCurrentConversation}
+                  handleSendMessageToCurrentConversation={handleUserSendMessage}
+                  engineState={engineState}
+                />
                 <p className="text-small text-default-500 px-2 text-center leading-5 font-medium">
                   LocAI can make mistakes. Check important info.
                 </p>
