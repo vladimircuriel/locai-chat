@@ -30,19 +30,5 @@ export default function useChatOptionsDropDown({
     }
   }, [conversationId, copy])
 
-  const handleDelete = useCallback(async () => {
-    setAmountOfConversations((prev) => Math.max(prev - 1, 0))
-
-    await deleteMessagesByConversation(conversationId)
-    const deletedConversation = await deleteConversation(conversationId)
-
-    addToast({
-      title: 'Conversation deleted',
-      description: `The conversation '${deletedConversation?.title}' has been deleted successfully.`,
-      color: 'danger',
-      severity: 'danger',
-    })
-  }, [conversationId, setAmountOfConversations])
-
-  return { handleShare, handleDelete }
+  return { handleShare }
 }
