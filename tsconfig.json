@@ -23,7 +23,7 @@
         "src/lib/*"
       ],
       "@models/*": [
-        "src/lib/models/*"
+        "src/lib/muck/models/*"
       ],
       "@utils/*": [
         "src/lib/utils/*"
