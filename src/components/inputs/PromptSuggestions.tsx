@@ -1,4 +1,4 @@
-import { Button } from '@heroui/react'
+import { Button } from '@heroui/button'
 import { Icon } from '@iconify/react'
 import type { PromptSuggestion } from '@lib/constants/suggestions.contants'
 

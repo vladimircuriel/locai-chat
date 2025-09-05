@@ -11,9 +11,14 @@ import PromptInputAssets from './PromptInputAsstets'
 export interface PromptInputProps {
   prompt: string
   setPrompt: React.Dispatch<React.SetStateAction<string>>
+  handleMessageSend: () => void
 }
 
-export default function PromptInputFullLineComponent({ prompt, setPrompt }: PromptInputProps) {
+export default function PromptInputFullLineComponent({
+  prompt,
+  setPrompt,
+  handleMessageSend,
+}: PromptInputProps) {
   const {
     assets,
     setAssets,
@@ -23,7 +28,7 @@ export default function PromptInputFullLineComponent({ prompt, setPrompt }: Prom
     handlePaste,
     handleFileUpload,
     onSubmit,
-  } = usePromptInputFullLineComponent({ prompt, setPrompt })
+  } = usePromptInputFullLineComponent({ prompt, setPrompt, handleMessageSend })
 
   return (
     <Form

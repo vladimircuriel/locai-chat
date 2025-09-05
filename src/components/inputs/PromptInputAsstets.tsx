@@ -1,5 +1,7 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: it does not affect */
-import { Badge, Button, Image } from '@heroui/react'
+import { Badge } from '@heroui/badge'
+import { Button } from '@heroui/button'
+import { Image } from '@heroui/image'
 import { Icon } from '@iconify/react'
 
 interface PromptInputAssetsProps {
