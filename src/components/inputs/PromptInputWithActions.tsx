@@ -37,7 +37,7 @@ export default function PromptInputWithActions() {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <ScrollShadow hideScrollBar className="flex flex-nowrap gap-2" orientation="horizontal">
+      {/* <ScrollShadow hideScrollBar className="flex flex-nowrap gap-2" orientation="horizontal">
         <div className="flex gap-2">
           {ideas.map(({ title, description }, index) => (
             <Button
@@ -51,7 +51,7 @@ export default function PromptInputWithActions() {
             </Button>
           ))}
         </div>
-      </ScrollShadow>
+      </ScrollShadow> */}
       <form className="rounded-medium bg-default-100 hover:bg-default-200/70 flex w-full flex-col items-start transition-colors">
         <PromptInput
           classNames={{

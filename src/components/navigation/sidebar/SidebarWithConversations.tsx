@@ -22,6 +22,7 @@ export default function SidebarWithConversations({
   subTitle,
   classNames = {},
   setAmountOfConversations,
+  handleSetCurrentConversation,
 }: {
   children?: React.ReactNode
   header?: React.ReactNode
@@ -29,6 +30,7 @@ export default function SidebarWithConversations({
   subTitle?: string
   classNames?: Record<string, string>
   setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
+  handleSetCurrentConversation: (conversationId: string) => Promise<void>
 }) {
   const { isOpen, onOpen, onOpenChange, conversations } = useSidebarWithConversations()
 
@@ -43,7 +45,7 @@ export default function SidebarWithConversations({
 
       <Spacer y={8} />
 
-      <ScrollShadow className="-mr-6 h-full max-h-full pr-6 overflow-hidden">
+      <ScrollShadow className="-mr-6 h-full max-h-full pr-6 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <Button
           fullWidth
           className="bg-default-foreground text-default-50 mt-2 mb-6 h-[44px] justify-start gap-3 px-3 py-[10px]"
@@ -65,6 +67,7 @@ export default function SidebarWithConversations({
             {conversations.map((conversation) => (
               <ListboxItem
                 key={conversation.id}
+                onPress={() => handleSetCurrentConversation(conversation.id)}
                 className="group text-default-500 h-[44px] px-[12px] py-[10px]"
                 endContent={
                   <ChatOptionsDropDown
