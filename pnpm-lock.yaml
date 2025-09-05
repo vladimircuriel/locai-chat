@@ -17,6 +17,9 @@ importers:
       '@heroui/react':
         specifier: 2.8.3
         version: 2.8.3(@types/react@19.1.12)(framer-motion@12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(tailwindcss@4.1.12)
+      '@mlc-ai/web-llm':
+        specifier: ^0.2.79
+        version: 0.2.79
       '@react-aria/visually-hidden':
         specifier: ^3.8.27
         version: 3.8.27(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -1117,6 +1120,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.30':
     resolution: {integrity: sha512-GQ7Nw5G2lTu/BtHTKfXhKHok2WGetd4XYcVKGx00SjAk8GMwgJM3zr6zORiPGuOE+/vkc90KtTosSSvaCjKb2Q==}
+
+  '@mlc-ai/web-llm@0.2.79':
+    resolution: {integrity: sha512-Hy1ZHQ0o2bZGZoVnGK48+fts/ZSKwLe96xjvqL/6C59Mem9HoHTcFE07NC2E23mRmhd01tL655N6CPeYmwWgwQ==}
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
@@ -2402,6 +2408,10 @@ packages:
 
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+
+  loglevel@1.9.2:
+    resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
+    engines: {node: '>= 0.6.0'}
 
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -4644,6 +4654,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@mlc-ai/web-llm@0.2.79':
+    dependencies:
+      loglevel: 1.9.2
+
   '@oslojs/encoding@1.1.0': {}
 
   '@react-aria/breadcrumbs@3.5.28(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
@@ -6319,6 +6333,8 @@ snapshots:
       lightningcss-win32-x64-msvc: 1.30.1
 
   lodash.debounce@4.0.8: {}
+
+  loglevel@1.9.2: {}
 
   longest-streak@3.1.0: {}
 

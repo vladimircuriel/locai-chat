@@ -13,6 +13,7 @@ import { ScrollShadow } from '@heroui/scroll-shadow'
 import { Spacer } from '@heroui/spacer'
 import { Icon } from '@iconify/react'
 import useSidebarWithConversations from '@lib/hooks/useSidebarWithConversations'
+import type { Conversation } from '@lib/models/conversation.model'
 import type React from 'react'
 import SidebarDrawer from './SidebarDrawer'
 
@@ -23,6 +24,9 @@ export default function SidebarWithConversations({
   classNames = {},
   setAmountOfConversations,
   handleSetCurrentConversation,
+  handleCreateNewConversation,
+  handleDeleteConversation,
+  conversations,
 }: {
   children?: React.ReactNode
   header?: React.ReactNode
@@ -31,8 +35,11 @@ export default function SidebarWithConversations({
   classNames?: Record<string, string>
   setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
   handleSetCurrentConversation: (conversationId: string) => Promise<void>
+  handleDeleteConversation: (conversationId: string) => Promise<void>
+  handleCreateNewConversation: () => void
+  conversations: Conversation[]
 }) {
-  const { isOpen, onOpen, onOpenChange, conversations } = useSidebarWithConversations()
+  const { isOpen, onOpen, onOpenChange } = useSidebarWithConversations()
 
   const content = (
     <div className="relative flex h-full w-72 flex-1 flex-col p-6">
@@ -49,6 +56,7 @@ export default function SidebarWithConversations({
         <Button
           fullWidth
           className="bg-default-foreground text-default-50 mt-2 mb-6 h-[44px] justify-start gap-3 px-3 py-[10px]"
+          onPress={handleCreateNewConversation}
           startContent={
             <Icon className="text-default-50" icon="solar:chat-round-dots-linear" width={24} />
           }
@@ -73,10 +81,11 @@ export default function SidebarWithConversations({
                   <ChatOptionsDropDown
                     conversationId={conversation.id}
                     setAmountOfConversations={setAmountOfConversations}
+                    handleDeleteConversation={handleDeleteConversation}
                   />
                 }
               >
-                {conversation.title || 'Untitled conversation'}
+                {conversation.title.slice(0, 30) || 'Untitled conversation'}
               </ListboxItem>
             ))}
           </ListboxSection>
