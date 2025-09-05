@@ -1,18 +1,52 @@
-import type { PromptInputProps } from '@components/inputs/PromptInputFullLineComponent'
+import { saveConversation } from '@lib/db/conversation.db'
+import { saveMessage } from '@lib/db/message.db'
+import type { Conversation } from '@lib/models/conversation.model'
+import type { Message } from '@lib/models/message.model'
 import React, { useCallback, useState } from 'react'
 
-export default function usePromptInputFullLineComponent({ prompt, setPrompt }: PromptInputProps) {
+export type usePromptInputProps = Readonly<{
+  prompt: string
+  setPrompt: React.Dispatch<React.SetStateAction<string>>
+  handleMessageSend: () => void
+}>
+
+export default function usePromptInputFullLineComponent({
+  prompt,
+  handleMessageSend,
+}: usePromptInputProps) {
   const [assets, setAssets] = useState<string[]>([])
 
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (!prompt) return
 
-    setPrompt('')
+    const conversation: Conversation = {
+      id: crypto.randomUUID(),
+      title: prompt.slice(0, 20),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+
+    const savedConversation = await saveConversation(conversation)
+
+    const message: Message = {
+      id: crypto.randomUUID(),
+      conversationId: savedConversation.id,
+      text: prompt,
+      user: 'user',
+      favorite: false,
+      timestamp: new Date(),
+      status: 'sent',
+    }
+
+    await saveMessage(message)
+
+    handleMessageSend()
+
     inputRef?.current?.focus()
-  }, [prompt, setPrompt])
+  }, [prompt, handleMessageSend])
 
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,9 +62,10 @@ export default function usePromptInputFullLineComponent({ prompt, setPrompt }: P
         e.preventDefault()
 
         handleSubmit()
+        handleMessageSend()
       }
     },
-    [handleSubmit],
+    [handleSubmit, handleMessageSend],
   )
 
   const handlePaste = useCallback(async (e: React.ClipboardEvent) => {
