@@ -1,13 +1,7 @@
 import ChatOptionsDropDown from '@components/dropdown/ChatOptionsDropDown'
+import InfoModal from '@components/modal/InfoModal'
 import ModelModal from '@components/modal/ModelModal'
 import { Button } from '@heroui/button'
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-} from '@heroui/dropdown'
 import { Listbox, ListboxItem, ListboxSection } from '@heroui/listbox'
 import { cn } from '@heroui/react'
 import { ScrollShadow } from '@heroui/scroll-shadow'
@@ -52,7 +46,7 @@ export default function SidebarWithConversations({
   engineState,
   setModel,
 }: SidebarWithConversationsProps) {
-  const { isOpen, onOpen, onOpenChange } = useSidebarWithConversations()
+  const { isOpen, onOpen, onOpenChange, isFirstTime } = useSidebarWithConversations()
 
   const content = (
     <div className="relative flex flex-col flex-1 h-full p-6 w-72">
@@ -108,17 +102,7 @@ export default function SidebarWithConversations({
       <Spacer y={8} />
 
       <div className="flex flex-col mt-auto">
-        <Button
-          fullWidth
-          className="justify-start text-default-600"
-          startContent={
-            <Icon className="text-default-600" icon="solar:info-circle-line-duotone" width={24} />
-          }
-          variant="light"
-        >
-          About
-        </Button>
-
+        <InfoModal isFirstTime={isFirstTime} />
         <Button
           className="justify-start text-default-600"
           startContent={

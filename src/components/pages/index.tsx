@@ -28,10 +28,10 @@ export default function Index() {
     <>
       {amountOfConversations === 0 && (
         <div className="flex h-screen max-h-[calc(100vh-140px)] w-full">
-          <div className="flex h-full w-full items-center justify-center">
-            <div className="flex w-full max-w-xl flex-col items-center gap-8">
-              <h1 className="text-default-foreground text-3xl leading-9 font-bold">LocAI Chat</h1>
-              <div className="flex w-full flex-col gap-4">
+          <div className="flex items-center justify-center w-full h-full">
+            <div className="flex flex-col items-center w-full max-w-xl gap-8">
+              <h1 className="text-3xl font-bold leading-9 text-default-foreground">LocAI Chat</h1>
+              <div className="flex flex-col w-full gap-4">
                 <PromptInputFullLineWithBottomActions
                   setAmountOfConversations={setAmountOfConversations}
                   amountOfConversations={amountOfConversations}
@@ -45,7 +45,7 @@ export default function Index() {
         </div>
       )}
       {amountOfConversations > 0 && (
-        <div className="h-dvh w-full max-w-full">
+        <div className="w-full max-w-full h-dvh">
           <SidebarWithConversations
             setAmountOfConversations={setAmountOfConversations}
             handleSetCurrentConversation={handleSetCurrentConversation}
@@ -61,20 +61,20 @@ export default function Index() {
               header: 'min-h-[40px] h-[40px] py-[12px] overflow-hidden',
             }}
           >
-            <div className="relative flex h-full flex-col px-4">
+            <div className="relative flex flex-col h-full px-4">
               {!currentConversation && (
-                <div className="flex h-full flex-col items-center justify-center gap-10">
-                  <div className="bg-foreground flex rounded-full">ACME IA</div>
+                <div className="flex flex-col items-center justify-center h-full gap-10">
+                  <div className="flex rounded-full bg-foreground">ACME IA</div>
                 </div>
               )}
               {conversationMessages.length > 0 && (
-                <ScrollShadow className="flex h-full max-h-[75vh] flex-col gap-2.5 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8">
+                <ScrollShadow className="flex h-full max-h-[75vh] flex-col gap-2.5 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8">
                   {conversationMessages.map((conversationMessage) => (
                     <MessagingChatMessage key={conversationMessage.id} {...conversationMessage} />
                   ))}
                 </ScrollShadow>
               )}
-              <div className="mt-auto flex max-w-full flex-col gap-2">
+              <div className="flex flex-col max-w-full gap-2 mt-auto">
                 {engineState?.isDownloading && (
                   <Chip color="success" variant="dot" className="mb-2">
                     {downloadProgress.slice(0, 140)}...
@@ -87,7 +87,7 @@ export default function Index() {
                   handleAddConversation={handleAddConversation}
                   engineState={engineState}
                 />
-                <p className="text-small text-default-500 px-2 text-center leading-5 font-medium">
+                <p className="px-2 font-medium leading-5 text-center text-small text-default-500">
                   WebLLM Models can make mistakes. Please verify critical information.
                 </p>
               </div>

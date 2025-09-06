@@ -3,53 +3,12 @@ import { Button } from '@heroui/button'
 import { Chip } from '@heroui/chip'
 import { Divider } from '@heroui/divider'
 import { Input } from '@heroui/input'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from '@heroui/modal'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@heroui/modal'
 import { Select, SelectItem } from '@heroui/select'
 import MODELS from '@lib/constants/models.constants'
+import useModelModal from '@lib/hooks/useModelModal'
 import type { Engine } from '@lib/hooks/useWebLLM'
 import type { Model } from '@lib/models/model.model'
-import { useCallback, useState } from 'react'
-
-type UseModelModalProps = Readonly<{
-  allModels: Model[]
-  selectedModel: Model | null
-  setModel: React.Dispatch<React.SetStateAction<Model>>
-}>
-
-export function useModelModal({ allModels, selectedModel, setModel }: UseModelModalProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [models, setModels] = useState<Model[]>(allModels)
-
-  const handleSearch = useCallback(
-    (query: string) => {
-      if (!query) {
-        setModels(allModels)
-        return
-      }
-
-      const filteredModels = models.filter((model) =>
-        model.id.toLowerCase().includes(query.toLowerCase()),
-      )
-      setModels(filteredModels)
-    },
-    [models, allModels],
-  )
-
-  return {
-    isOpen,
-    onOpen,
-    onOpenChange,
-    models,
-    handleSearch,
-  }
-}
 
 type ModelModalProps = {
   selectedModel: Model | null
@@ -60,8 +19,6 @@ type ModelModalProps = {
 export default function ModelModal({ selectedModel, setModel, engineState }: ModelModalProps) {
   const { isOpen, onOpen, onOpenChange, models, handleSearch } = useModelModal({
     allModels: MODELS,
-    selectedModel,
-    setModel,
   })
 
   return (
