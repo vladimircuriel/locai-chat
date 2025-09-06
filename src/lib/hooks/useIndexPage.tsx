@@ -13,7 +13,8 @@ import {
 import type { Conversation } from '@lib/models/conversation.model'
 import type { Message } from '@lib/models/message.model'
 import type { Model } from '@lib/models/model.model'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import isWebGPUSupported from '@lib/utils/gpu'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useWebLLM, type WebLLMConfig } from './useWebLLM'
 
 export default function useIndexPage() {
@@ -24,7 +25,7 @@ export default function useIndexPage() {
   )
   const [conversationMessages, setConversationMessages] = useState<Message[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
-  const scrollRef = useState<HTMLDivElement | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [model, setModel] = useState<Model>({
     id: 'Qwen2-0.5B-Instruct',
     quantization: ['q0f16'],
@@ -35,6 +36,7 @@ export default function useIndexPage() {
   const [temperature, setTemperature] = useState<number>(0.8)
   const [maxTokens, setMaxTokens] = useState<number>(512)
   const [downloadProgress, setDownloadProgress] = useState<string>('')
+  const [webGPUSupported, setWebGPUSupported] = useState<boolean | null>(null)
 
   const config = useMemo<WebLLMConfig>(
     () => ({
@@ -177,6 +179,22 @@ export default function useIndexPage() {
     fetchConversations()
   }, [])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We actually only want to run this when conversationMessages changes
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+  }, [conversationMessages])
+
+  useEffect(() => {
+    const checkWebGPUSupport = async () => {
+      const supported = await isWebGPUSupported()
+      setWebGPUSupported(supported)
+    }
+
+    checkWebGPUSupport()
+  }, [])
+
   return {
     amountOfConversations,
     conversations,
@@ -189,10 +207,17 @@ export default function useIndexPage() {
     handleDeleteConversation,
     sendMessagesToLLM,
     setModel,
+    setStream,
     currentConversation,
     conversationMessages,
     downloadProgress,
+    scrollRef,
+    temperature,
+    setTemperature,
+    maxTokens,
+    setMaxTokens,
     model,
     engineState,
+    webGPUSupported,
   }
 }

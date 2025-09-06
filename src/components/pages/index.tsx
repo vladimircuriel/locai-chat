@@ -1,6 +1,7 @@
 import MessagingChatMessage from '@components/card/MessageCard'
 import PromptInputFullLineWithBottomActions from '@components/inputs/PromptInputFullLineWithBottomActions'
 import PromptInputWithActions from '@components/inputs/PromptInputWithActions'
+import NoWebGPUModal from '@components/modal/NoWebGPUModal'
 import SidebarWithConversations from '@components/navigation/sidebar/SidebarWithConversations'
 import { Chip } from '@heroui/chip'
 import { ScrollShadow } from '@heroui/scroll-shadow'
@@ -19,10 +20,16 @@ export default function Index() {
     currentConversation,
     conversationMessages,
     engineState,
+    scrollRef,
     model,
     setModel,
     downloadProgress,
+    webGPUSupported,
   } = useIndexPage()
+
+  if (!webGPUSupported) {
+    return <NoWebGPUModal isOpen={!webGPUSupported} />
+  }
 
   return (
     <>
@@ -68,7 +75,10 @@ export default function Index() {
                 </div>
               )}
               {conversationMessages.length > 0 && (
-                <ScrollShadow className="flex h-full max-h-[75vh] flex-col gap-2.5 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8">
+                <ScrollShadow
+                  ref={scrollRef}
+                  className="flex h-full max-h-[75vh] flex-col gap-2.5 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-6 pb-8"
+                >
                   {conversationMessages.map((conversationMessage) => (
                     <MessagingChatMessage key={conversationMessage.id} {...conversationMessage} />
                   ))}
