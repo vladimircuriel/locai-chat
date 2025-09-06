@@ -17,6 +17,7 @@ export default function Index() {
     handleDeleteConversation,
     handleUserSendMessage,
     handleAddConversation,
+    laboratoryModalProps,
     currentConversation,
     conversationMessages,
     engineState,
@@ -58,6 +59,7 @@ export default function Index() {
             handleSetCurrentConversation={handleSetCurrentConversation}
             handleCreateNewConversation={handleCreateNewConversation}
             handleDeleteConversation={handleDeleteConversation}
+            laboratoryModalProps={laboratoryModalProps}
             currentConversation={currentConversation}
             currentModel={model}
             setModel={setModel}
