@@ -1,5 +1,6 @@
 import type { Conversation } from '@lib/models/conversation.model'
 import { getDB } from './db'
+import { getMessagesByConversation } from './message.db'
 
 const STORE = 'conversations'
 
@@ -12,7 +13,21 @@ export async function saveConversation(conversation: Conversation): Promise<Conv
 
 export async function getAllConversations(): Promise<Conversation[]> {
   const db = await getDB()
-  return db.getAll(STORE)
+  const conversations = await db.getAll(STORE)
+
+  const enriched = await Promise.all(
+    conversations.map(async (conversation) => {
+      const msgs = await getMessagesByConversation(conversation.id)
+      const lastTs = msgs.length
+        ? new Date(msgs[msgs.length - 1].timestamp).getTime()
+        : new Date(conversation.updatedAt).getTime()
+      return { conversation, lastTs }
+    }),
+  )
+
+  enriched.sort((a, b) => b.lastTs - a.lastTs)
+
+  return enriched.map((e) => e.conversation)
 }
 
 export async function getConversationById(id: string): Promise<Conversation | undefined> {

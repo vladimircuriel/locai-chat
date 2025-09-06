@@ -8,3 +8,11 @@
 @theme {
   --font-sans: "Onest Variable", "sans-serif";
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  overflow-y: hidden;
+}

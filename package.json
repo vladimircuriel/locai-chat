@@ -13,6 +13,7 @@
     "@astrojs/react": "^4.3.0",
     "@fontsource-variable/onest": "^5.2.9",
     "@heroui/react": "2.8.3",
+    "@mlc-ai/web-llm": "^0.2.79",
     "@react-aria/visually-hidden": "^3.8.27",
     "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/vite": "4.1.12",
@@ -24,11 +25,16 @@
     "postcss": "^8.5.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^15.6.6",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "4.1.12",
+    "use-debounce": "^10.0.6",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
-    "@iconify/react": "^6.0.1"
+    "@iconify/react": "^6.0.1",
+    "@types/react-syntax-highlighter": "^15.5.13"
   }
 }

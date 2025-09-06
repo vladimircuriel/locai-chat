@@ -1,18 +1,18 @@
 import { saveConversation } from '@lib/db/conversation.db'
-import { saveMessage } from '@lib/db/message.db'
 import type { Conversation } from '@lib/models/conversation.model'
-import type { Message } from '@lib/models/message.model'
 import React, { useCallback, useState } from 'react'
 
 export type usePromptInputProps = Readonly<{
   prompt: string
   setPrompt: React.Dispatch<React.SetStateAction<string>>
-  handleMessageSend: () => void
+  handleMessageSend: (conversationId: string) => void
+  handleAddConversation: (conversation: Conversation) => void
 }>
 
 export default function usePromptInputFullLineComponent({
   prompt,
   handleMessageSend,
+  handleAddConversation,
 }: usePromptInputProps) {
   const [assets, setAssets] = useState<string[]>([])
 
@@ -24,29 +24,19 @@ export default function usePromptInputFullLineComponent({
 
     const conversation: Conversation = {
       id: crypto.randomUUID(),
-      title: prompt.slice(0, 20),
+      title: prompt,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
 
     const savedConversation = await saveConversation(conversation)
+    handleAddConversation(conversation)
+    handleMessageSend(savedConversation.id)
 
-    const message: Message = {
-      id: crypto.randomUUID(),
-      conversationId: savedConversation.id,
-      text: prompt,
-      user: 'user',
-      favorite: false,
-      timestamp: new Date(),
-      status: 'sent',
-    }
-
-    await saveMessage(message)
-
-    handleMessageSend()
+    setAssets([])
 
     inputRef?.current?.focus()
-  }, [prompt, handleMessageSend])
+  }, [prompt, handleMessageSend, handleAddConversation])
 
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,10 +52,9 @@ export default function usePromptInputFullLineComponent({
         e.preventDefault()
 
         handleSubmit()
-        handleMessageSend()
       }
     },
-    [handleSubmit, handleMessageSend],
+    [handleSubmit],
   )
 
   const handlePaste = useCallback(async (e: React.ClipboardEvent) => {

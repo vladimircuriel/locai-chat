@@ -4,6 +4,7 @@ import { cn } from '@heroui/react'
 import { Tooltip } from '@heroui/tooltip'
 import { Icon } from '@iconify/react'
 import usePromptInputFullLineComponent from '@lib/hooks/usePromptInputFullLineComponent'
+import type { Conversation } from '@lib/models/conversation.model'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
 import PromptInput from './PromptInput'
 import PromptInputAssets from './PromptInputAsstets'
@@ -11,13 +12,15 @@ import PromptInputAssets from './PromptInputAsstets'
 export interface PromptInputProps {
   prompt: string
   setPrompt: React.Dispatch<React.SetStateAction<string>>
-  handleMessageSend: () => void
+  handleMessageSend: (conversationId: string) => void
+  handleAddConversation: (conversation: Conversation) => void
 }
 
 export default function PromptInputFullLineComponent({
   prompt,
   setPrompt,
   handleMessageSend,
+  handleAddConversation,
 }: PromptInputProps) {
   const {
     assets,
@@ -28,7 +31,12 @@ export default function PromptInputFullLineComponent({
     handlePaste,
     handleFileUpload,
     onSubmit,
-  } = usePromptInputFullLineComponent({ prompt, setPrompt, handleMessageSend })
+  } = usePromptInputFullLineComponent({
+    prompt,
+    setPrompt,
+    handleMessageSend,
+    handleAddConversation,
+  })
 
   return (
     <Form

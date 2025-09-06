@@ -1,20 +1,38 @@
 import ChatOptionsDropDown from '@components/dropdown/ChatOptionsDropDown'
+import InfoModal from '@components/modal/InfoModal'
+import LaboratoryModal from '@components/modal/LaboratoryModal'
+import ModelModal from '@components/modal/ModelModal'
 import { Button } from '@heroui/button'
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-} from '@heroui/dropdown'
 import { Listbox, ListboxItem, ListboxSection } from '@heroui/listbox'
 import { cn } from '@heroui/react'
 import { ScrollShadow } from '@heroui/scroll-shadow'
 import { Spacer } from '@heroui/spacer'
 import { Icon } from '@iconify/react'
+import type { LaboratoryModalPropsDTO } from '@lib/hooks/useIndexPage'
 import useSidebarWithConversations from '@lib/hooks/useSidebarWithConversations'
+import type { Engine } from '@lib/hooks/useWebLLM'
+import type { Conversation } from '@lib/models/conversation.model'
+import type { Model } from '@lib/models/model.model'
 import type React from 'react'
 import SidebarDrawer from './SidebarDrawer'
+
+type SidebarWithConversationsProps = Readonly<{
+  children?: React.ReactNode
+  header?: React.ReactNode
+  title?: string
+  subTitle?: string
+  classNames?: Record<string, string>
+  setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
+  handleSetCurrentConversation: (conversationId: string) => Promise<void>
+  handleDeleteConversation: (conversationId: string) => Promise<void>
+  handleCreateNewConversation: () => void
+  laboratoryModalProps: LaboratoryModalPropsDTO
+  conversations: Conversation[]
+  currentConversation?: Conversation
+  currentModel: Model
+  engineState: Engine | null
+  setModel: React.Dispatch<React.SetStateAction<Model>>
+}>
 
 export default function SidebarWithConversations({
   children,
@@ -22,31 +40,34 @@ export default function SidebarWithConversations({
   subTitle,
   classNames = {},
   setAmountOfConversations,
-}: {
-  children?: React.ReactNode
-  header?: React.ReactNode
-  title?: string
-  subTitle?: string
-  classNames?: Record<string, string>
-  setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
-}) {
-  const { isOpen, onOpen, onOpenChange, conversations } = useSidebarWithConversations()
+  handleSetCurrentConversation,
+  handleCreateNewConversation,
+  handleDeleteConversation,
+  laboratoryModalProps,
+  conversations,
+  currentConversation,
+  currentModel,
+  engineState,
+  setModel,
+}: SidebarWithConversationsProps) {
+  const { isOpen, onOpen, onOpenChange, isFirstTime } = useSidebarWithConversations()
 
   const content = (
-    <div className="relative flex h-full w-72 flex-1 flex-col p-6">
+    <div className="relative flex flex-col flex-1 h-full p-6 w-72">
       <div className="flex items-center gap-2 px-2">
-        <div className="bg-foreground flex h-8 w-8 items-center justify-center rounded-full">
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-foreground">
           {/* <AcmeIcon className="text-background" /> */}
         </div>
-        <span className="text-foreground text-base leading-6 font-bold uppercase">Acme AI</span>
+        <span className="text-base font-bold leading-6 uppercase text-foreground">Acme AI</span>
       </div>
 
       <Spacer y={8} />
 
-      <ScrollShadow className="-mr-6 h-full max-h-full pr-6 overflow-hidden">
+      <ScrollShadow className="-mr-6 h-full max-h-full pr-6 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <Button
           fullWidth
           className="bg-default-foreground text-default-50 mt-2 mb-6 h-[44px] justify-start gap-3 px-3 py-[10px]"
+          onPress={handleCreateNewConversation}
           startContent={
             <Icon className="text-default-50" icon="solar:chat-round-dots-linear" width={24} />
           }
@@ -65,15 +86,17 @@ export default function SidebarWithConversations({
             {conversations.map((conversation) => (
               <ListboxItem
                 key={conversation.id}
-                className="group text-default-500 h-[44px] px-[12px] py-[10px]"
+                onPress={() => handleSetCurrentConversation(conversation.id)}
+                className={`group text-default-500 text-start h-[44px] px-[12px] py-[10px] ${currentConversation?.id === conversation.id ? 'bg-default-200/70 text-foreground' : 'hover:bg-default-200/50'}`}
                 endContent={
                   <ChatOptionsDropDown
                     conversationId={conversation.id}
                     setAmountOfConversations={setAmountOfConversations}
+                    handleDeleteConversation={handleDeleteConversation}
                   />
                 }
               >
-                {conversation.title || 'Untitled conversation'}
+                {conversation.title.slice(0, 30) || 'Untitled conversation'}
               </ListboxItem>
             ))}
           </ListboxSection>
@@ -82,37 +105,15 @@ export default function SidebarWithConversations({
 
       <Spacer y={8} />
 
-      <div className="mt-auto flex flex-col">
-        <Button
-          fullWidth
-          className="text-default-600 justify-start"
-          startContent={
-            <Icon className="text-default-600" icon="solar:info-circle-line-duotone" width={24} />
-          }
-          variant="light"
-        >
-          About
-        </Button>
-
-        <Button
-          className="text-default-600 justify-start"
-          startContent={
-            <Icon
-              className="text-default-600"
-              icon="solar:settings-minimalistic-line-duotone"
-              width={24}
-            />
-          }
-          variant="light"
-        >
-          Laboratory
-        </Button>
+      <div className="flex flex-col mt-auto">
+        <InfoModal isFirstTime={isFirstTime} />
+        <LaboratoryModal {...laboratoryModalProps} />
       </div>
     </div>
   )
 
   return (
-    <div className="flex h-full min-h-192 w-full">
+    <div className="flex w-full h-full min-h-192">
       <SidebarDrawer
         className="bg-default-50 h-full flex-none rounded-[14px]"
         isOpen={isOpen}
@@ -123,124 +124,33 @@ export default function SidebarWithConversations({
       <div className="flex w-full flex-col px-4 sm:max-w-[calc(100%-288px)]">
         <header
           className={cn(
-            'rounded-t-medium   flex h-16 min-h-16 items-center justify-between gap-2 rounded-none px-4 py-3',
+            'rounded-t-medium flex h-16 min-h-16 items-center justify-between gap-2 rounded-none px-4 py-3',
             classNames?.['header'],
           )}
         >
           <Button isIconOnly className="flex sm:hidden" size="sm" variant="light" onPress={onOpen}>
             <Icon
-              className="text-default-500"
+              className="text-default-600"
               height={24}
               icon="solar:hamburger-menu-outline"
               width={24}
             />
           </Button>
           {(title || subTitle) && (
-            <div className="w-full min-w-[120px] sm:w-auto">
-              <div className="text-small text-foreground truncate leading-5 font-semibold">
+            <div className="w-full min-w-[200px] sm:w-auto">
+              <div className="font-semibold leading-5 truncate text-small text-start text-foreground">
                 {title}
               </div>
-              <div className="text-small text-default-500 truncate leading-5 font-normal">
+              <div className="font-normal leading-5 truncate text-small text-start text-default-500">
                 {subTitle}
               </div>
             </div>
           )}
 
-          <Dropdown className="bg-content1">
-            <DropdownTrigger>
-              <Button
-                disableAnimation
-                className="text-default-400 w-full min-w-[120px] items-center data-[hover=true]:bg-[unset]"
-                endContent={
-                  <Icon
-                    className="text-default-400"
-                    height={20}
-                    icon="solar:alt-arrow-down-linear"
-                    width={20}
-                  />
-                }
-                variant="light"
-              >
-                ACME v4
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="acme model version" className="p-0 pt-2" variant="faded">
-              <DropdownSection
-                classNames={{
-                  heading: 'text-tiny px-[10px]',
-                }}
-                title="Model"
-              >
-                <DropdownItem
-                  key="acme-v4"
-                  className="text-default-500 data-[hover=true]:text-default-500"
-                  classNames={{
-                    description: 'text-default-500 text-tiny',
-                  }}
-                  description="Newest and most advanced model"
-                  endContent={
-                    <Icon
-                      className="text-default-foreground"
-                      height={24}
-                      icon="solar:check-circle-bold"
-                      width={24}
-                    />
-                  }
-                  startContent={
-                    <Icon
-                      className="text-default-400"
-                      height={24}
-                      icon="solar:star-rings-linear"
-                      width={24}
-                    />
-                  }
-                >
-                  ACME v4
-                </DropdownItem>
-
-                <DropdownItem
-                  key="acme-v3.5"
-                  className="text-default-500 data-[hover=true]:text-default-500"
-                  classNames={{
-                    description: 'text-default-500 text-tiny',
-                  }}
-                  description="Advanced model for complex tasks"
-                  startContent={
-                    <Icon
-                      className="text-default-400"
-                      height={24}
-                      icon="solar:star-shine-outline"
-                      width={24}
-                    />
-                  }
-                >
-                  ACME v3.5
-                </DropdownItem>
-
-                <DropdownItem
-                  key="acme-v3"
-                  className="text-default-500 data-[hover=true]:text-default-500"
-                  classNames={{
-                    description: 'text-default-500 text-tiny',
-                  }}
-                  description="Great for everyday tasks"
-                  startContent={
-                    <Icon
-                      className="text-default-400"
-                      height={24}
-                      icon="solar:star-linear"
-                      width={24}
-                    />
-                  }
-                >
-                  ACME v3
-                </DropdownItem>
-              </DropdownSection>
-            </DropdownMenu>
-          </Dropdown>
+          <ModelModal selectedModel={currentModel} setModel={setModel} engineState={engineState} />
         </header>
         <div className="flex h-full">
-          <div className=" flex h-full w-full flex-col gap-4 py-3">{children}</div>
+          <div className="flex flex-col w-full h-full gap-4 py-3 ">{children}</div>
         </div>
       </div>
     </div>

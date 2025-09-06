@@ -5,13 +5,15 @@ import useChatOptionsDropDown from '@lib/hooks/useChatOptionsDropDown'
 type ChatOptionsDropDownProps = Readonly<{
   conversationId: string
   setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
+  handleDeleteConversation: (conversationId: string) => Promise<void>
 }>
 
 export default function ChatOptionsDropDown({
   conversationId,
   setAmountOfConversations,
+  handleDeleteConversation,
 }: ChatOptionsDropDownProps) {
-  const { handleShare, handleDelete } = useChatOptionsDropDown({
+  const { handleShare } = useChatOptionsDropDown({
     setAmountOfConversations,
     conversationId,
   })
@@ -42,19 +44,10 @@ export default function ChatOptionsDropDown({
           Copy JSON
         </DropdownItem>
         <DropdownItem
-          key="rename"
-          className="text-default-600 data-[hover=true]:text-default-900"
-          startContent={
-            <Icon className="text-default-600" height={20} icon="solar:pen-linear" width={20} />
-          }
-        >
-          Rename
-        </DropdownItem>
-        <DropdownItem
           key="delete"
           className="text-danger-500 data-[hover=true]:text-danger-500"
           color="danger"
-          onPress={handleDelete}
+          onPress={async () => await handleDeleteConversation(conversationId)}
           startContent={
             <Icon
               className="text-danger-500"
