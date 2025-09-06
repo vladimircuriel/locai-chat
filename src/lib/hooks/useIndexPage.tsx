@@ -24,13 +24,14 @@ export default function useIndexPage() {
   )
   const [conversationMessages, setConversationMessages] = useState<Message[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const scrollRef = useState<HTMLDivElement | null>(null)
   const [model, setModel] = useState<Model>({
     id: 'Qwen2-0.5B-Instruct',
     quantization: ['q0f16'],
     origin: 'HuggingFace',
     owner: 'meta',
   })
-  const [stream, setStream] = useState<boolean>(false)
+  const [stream, setStream] = useState<boolean>(true)
   const [temperature, setTemperature] = useState<number>(0.8)
   const [maxTokens, setMaxTokens] = useState<number>(512)
   const [downloadProgress, setDownloadProgress] = useState<string>('')
@@ -71,6 +72,7 @@ export default function useIndexPage() {
     config,
     conversation: currentConversation,
     handleSendMessageToCurrentConversation,
+    setConversationMessages,
   })
 
   const handleUserSendMessage = useCallback(

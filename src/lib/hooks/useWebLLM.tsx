@@ -31,6 +31,7 @@ type UseWebLLMProps = Readonly<{
   config?: WebLLMConfig
   conversation: Conversation | undefined
   handleSendMessageToCurrentConversation: (message: Message) => void
+  setConversationMessages: React.Dispatch<React.SetStateAction<Message[]>>
 }>
 
 export function useWebLLM({
@@ -38,6 +39,7 @@ export function useWebLLM({
   config = {},
   conversation,
   handleSendMessageToCurrentConversation,
+  setConversationMessages,
 }: UseWebLLMProps) {
   if (!selectedModel) {
     throw new Error('Model is required')
@@ -137,16 +139,61 @@ export function useWebLLM({
       }
 
       if (memoConfig.stream) {
+        handleSendMessageToCurrentConversation({
+          id: crypto.randomUUID(),
+          conversationId: conversationId!,
+          text: '',
+          user: 'bot',
+          favorite: false,
+          timestamp: new Date(),
+          status: 'pending',
+        })
+
         const stream = await engine.chat.completions.create({
           ...baseReq,
           stream: true,
         })
+
         let result = ''
         for await (const part of stream as any) {
           const delta = part.choices[0]?.delta?.content || ''
           result += delta
           onChunk?.(delta)
+
+          setConversationMessages((prev) => {
+            const copy = [...prev]
+            const lastIdx = copy.length - 1
+            copy[lastIdx] = {
+              ...copy[lastIdx],
+              text: result,
+              status: 'pending',
+            }
+            return copy
+          })
         }
+
+        setConversationMessages((prev) => {
+          const copy = [...prev]
+          const lastIdx = copy.length - 1
+          if (copy[lastIdx]?.user === 'bot' && copy[lastIdx]?.status === 'pending') {
+            copy.splice(lastIdx, 1)
+          }
+          return copy
+        })
+
+        const message: Message = {
+          id: crypto.randomUUID(),
+          conversationId: conversationId,
+          text: result ?? 'No response',
+          user: 'bot',
+          favorite: false,
+          timestamp: new Date(),
+          status: 'sent',
+        }
+
+        await saveMessage(message)
+        handleSendMessageToCurrentConversation(message)
+
         setEngineState((prev) => prev && { ...prev, isGenerating: false })
         return result
       } else {
@@ -171,7 +218,7 @@ export function useWebLLM({
         handleSendMessageToCurrentConversation(message)
       }
     },
-    [memoConfig, conversation, handleSendMessageToCurrentConversation],
+    [memoConfig, conversation, handleSendMessageToCurrentConversation, setConversationMessages],
   )
 
   return { engineState, sendMessagesToLLM }
