@@ -44,31 +44,31 @@ const MODELS: Model[] = [
     id: 'Hermes-2-Pro-Llama-3-8B',
     quantization: ['q0f16', 'q3f16_1', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
-    owner: 'hermes',
+    owner: 'mistral',
   },
   {
     id: 'Hermes-2-Theta-Llama-3-70B',
     quantization: ['q0f16', 'q3f16_1', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
-    owner: 'hermes',
+    owner: 'mistral',
   },
   {
     id: 'Hermes-2-Theta-Llama-3-8B',
     quantization: ['q0f16', 'q3f16_1', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
-    owner: 'hermes',
+    owner: 'mistral',
   },
   {
     id: 'Hermes-3-Llama-3.1-8B',
     quantization: ['q0f16', 'q3f16_1', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
-    owner: 'hermes',
+    owner: 'mistral',
   },
   {
     id: 'Hermes-3-Llama-3.2-3B',
     quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
-    owner: 'hermes',
+    owner: 'mistral',
   },
 
   // Phi family (Microsoft)
@@ -143,14 +143,6 @@ const MODELS: Model[] = [
     owner: 'qwen',
   },
 
-  // QwQ
-  {
-    id: 'QwQ-32B',
-    quantization: ['q0f16', 'q4f16_0', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'qwq',
-  },
-
   // DeepSeek family (DeepSeek)
   {
     id: 'DeepSeek-R1-Distill-Llama-70B',
@@ -193,52 +185,6 @@ const MODELS: Model[] = [
     quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
     owner: 'deepseek',
-  },
-
-  // Mixtral
-  {
-    id: 'Mixtral-8x7B-Instruct-v0.1',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'mixtral',
-  },
-
-  // SmolLM family
-  {
-    id: 'SmolLM-1.7B-Instruct',
-    quantization: ['q0f16', 'q0f32', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
-  },
-  {
-    id: 'SmolLM-135M-Instruct',
-    quantization: ['q0f16', 'q0f32', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
-  },
-  {
-    id: 'SmolLM-360M-Instruct',
-    quantization: ['q0f16', 'q0f32', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
-  },
-  {
-    id: 'SmolLM2-1.7B-Instruct',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
-  },
-  {
-    id: 'SmolLM2-135M-Instruct',
-    quantization: ['q0f16', 'q0f32', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
-  },
-  {
-    id: 'SmolLM2-360M-Instruct',
-    quantization: ['q0f16', 'q0f32', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'smollm',
   },
 
   // Gemma family (Google)
@@ -289,44 +235,6 @@ const MODELS: Model[] = [
     quantization: ['q0bf16', 'q0f16', 'q0f32', 'q4bf16_0', 'q4bf16_1', 'q4f16_1', 'q4f32_1'],
     origin: 'HuggingFace',
     owner: 'google',
-  },
-
-  // InternLM2.5 family
-  {
-    id: 'internlm2_5-1_8b',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
-  },
-  {
-    id: 'internlm2_5-1_8b-chat',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
-  },
-  {
-    id: 'internlm2_5-20b',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
-  },
-  {
-    id: 'internlm2_5-20b-chat',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
-  },
-  {
-    id: 'internlm2_5-7b',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
-  },
-  {
-    id: 'internlm2_5-7b-chat',
-    quantization: ['q0f16', 'q4f16_1', 'q4f32_1'],
-    origin: 'HuggingFace',
-    owner: 'internlm',
   },
 ]
 

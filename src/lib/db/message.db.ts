@@ -11,7 +11,8 @@ export async function saveMessage(message: Message) {
 
 export async function getMessagesByConversation(conversationId: string): Promise<Message[]> {
   const db = await getDB()
-  return db.getAllFromIndex(STORE, INDEX_BY_CONVO, conversationId)
+  const messages = await db.getAllFromIndex(STORE, INDEX_BY_CONVO, conversationId)
+  return messages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
 }
 
 export async function getAllMessages(): Promise<Message[]> {
