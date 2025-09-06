@@ -1,14 +1,14 @@
-import SUGGESTIONS from '@lib/constants/suggestions.contants'
+import SUGGESTIONS from '@lib/constants/suggestions.constants'
 import usePromptInputFullLineWithBottomActions from '@lib/hooks/usePromptInputFullLineWithBottomActions'
+import type { Conversation } from '@lib/models/conversation.model'
 import PromptInputFullLineComponent from './PromptInputFullLineComponent'
 import PromptSuggestions from './PromptSuggestions'
-import type { Conversation } from '@lib/models/conversation.model'
 
 type PromptInputFullLineWithBottomActionsProps = Readonly<{
   setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
   amountOfConversations: number
   handleSetCurrentConversation: (conversationId: string) => Promise<void>
-  handleUserSendMessage: (message: string) => void
+  handleUserSendMessage: (message: string, conversationId: string) => void
   handleAddConversation: (conversation: Conversation) => void
 }>
 

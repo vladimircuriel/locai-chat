@@ -12,7 +12,8 @@ import PromptInput from './PromptInput'
 type PromptInputWithActionsProps = {
   currentConversation: Conversation | undefined
   handleSetCurrentConversation: (conversationId: string) => Promise<void>
-  handleSendMessageToCurrentConversation: (message: string) => void
+  handleSendMessageToCurrentConversation: (message: string, conversationId: string) => void
+  handleAddConversation: (conversation: Conversation) => void
   engineState: Engine | null
 }
 
@@ -20,11 +21,13 @@ export default function PromptInputWithActions({
   currentConversation,
   handleSetCurrentConversation,
   handleSendMessageToCurrentConversation,
+  handleAddConversation,
   engineState,
 }: PromptInputWithActionsProps) {
   const { prompt, setPrompt, handleMessageSend } = usePromptInputWithActions({
     currentConversation,
     handleSetCurrentConversation,
+    handleAddConversation,
     handleSendMessageToCurrentConversation,
   })
 
@@ -42,7 +45,7 @@ export default function PromptInputWithActions({
               <Tooltip showArrow content="Send message">
                 <Button
                   isIconOnly
-                  color={!prompt ? 'default' : 'primary'}
+                  color={!prompt ? 'default' : 'secondary'}
                   radius="lg"
                   size="sm"
                   variant="solid"

@@ -4,10 +4,10 @@ import { cn } from '@heroui/react'
 import { Tooltip } from '@heroui/tooltip'
 import { Icon } from '@iconify/react'
 import usePromptInputFullLineComponent from '@lib/hooks/usePromptInputFullLineComponent'
+import type { Conversation } from '@lib/models/conversation.model'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
 import PromptInput from './PromptInput'
 import PromptInputAssets from './PromptInputAsstets'
-import type { Conversation } from '@lib/models/conversation.model'
 
 export interface PromptInputProps {
   prompt: string

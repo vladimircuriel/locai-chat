@@ -2,6 +2,7 @@ import MessagingChatMessage from '@components/card/MessageCard'
 import PromptInputFullLineWithBottomActions from '@components/inputs/PromptInputFullLineWithBottomActions'
 import PromptInputWithActions from '@components/inputs/PromptInputWithActions'
 import SidebarWithConversations from '@components/navigation/sidebar/SidebarWithConversations'
+import { Chip } from '@heroui/chip'
 import { ScrollShadow } from '@heroui/scroll-shadow'
 import useIndexPage from '@lib/hooks/useIndexPage'
 
@@ -18,6 +19,8 @@ export default function Index() {
     currentConversation,
     conversationMessages,
     engineState,
+    model,
+    setModel,
     downloadProgress,
   } = useIndexPage()
 
@@ -48,9 +51,14 @@ export default function Index() {
             handleSetCurrentConversation={handleSetCurrentConversation}
             handleCreateNewConversation={handleCreateNewConversation}
             handleDeleteConversation={handleDeleteConversation}
+            currentConversation={currentConversation}
+            currentModel={model}
+            setModel={setModel}
             conversations={conversations}
+            engineState={engineState}
+            title={currentConversation?.title || 'New Conversation'}
             classNames={{
-              header: 'min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden',
+              header: 'min-h-[40px] h-[40px] py-[12px] overflow-hidden',
             }}
           >
             <div className="relative flex h-full flex-col px-4">
@@ -68,20 +76,19 @@ export default function Index() {
               )}
               <div className="mt-auto flex max-w-full flex-col gap-2">
                 {engineState?.isDownloading && (
-                  <div className="absolute top-4 left-1/2 z-10 flex -translate-x-1/2 transform items-center gap-2 rounded-full bg-default-200/70 px-4 py-2 text-default-600 shadow-md">
-                    <span className="text-small font-medium leading-5">
-                      Downloading model... {downloadProgress}
-                    </span>
-                  </div>
+                  <Chip color="success" variant="dot" className="mb-2">
+                    {downloadProgress.slice(0, 140)}...
+                  </Chip>
                 )}
                 <PromptInputWithActions
                   currentConversation={currentConversation}
                   handleSetCurrentConversation={handleSetCurrentConversation}
                   handleSendMessageToCurrentConversation={handleUserSendMessage}
+                  handleAddConversation={handleAddConversation}
                   engineState={engineState}
                 />
                 <p className="text-small text-default-500 px-2 text-center leading-5 font-medium">
-                  LocAI can make mistakes. Check important info.
+                  WebLLM Models can make mistakes. Please verify critical information.
                 </p>
               </div>
             </div>
