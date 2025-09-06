@@ -1,5 +1,6 @@
 import ChatOptionsDropDown from '@components/dropdown/ChatOptionsDropDown'
 import InfoModal from '@components/modal/InfoModal'
+import LaboratoryModal from '@components/modal/LaboratoryModal'
 import ModelModal from '@components/modal/ModelModal'
 import { Button } from '@heroui/button'
 import { Listbox, ListboxItem, ListboxSection } from '@heroui/listbox'
@@ -7,6 +8,7 @@ import { cn } from '@heroui/react'
 import { ScrollShadow } from '@heroui/scroll-shadow'
 import { Spacer } from '@heroui/spacer'
 import { Icon } from '@iconify/react'
+import type { LaboratoryModalPropsDTO } from '@lib/hooks/useIndexPage'
 import useSidebarWithConversations from '@lib/hooks/useSidebarWithConversations'
 import type { Engine } from '@lib/hooks/useWebLLM'
 import type { Conversation } from '@lib/models/conversation.model'
@@ -24,6 +26,7 @@ type SidebarWithConversationsProps = Readonly<{
   handleSetCurrentConversation: (conversationId: string) => Promise<void>
   handleDeleteConversation: (conversationId: string) => Promise<void>
   handleCreateNewConversation: () => void
+  laboratoryModalProps: LaboratoryModalPropsDTO
   conversations: Conversation[]
   currentConversation?: Conversation
   currentModel: Model
@@ -40,6 +43,7 @@ export default function SidebarWithConversations({
   handleSetCurrentConversation,
   handleCreateNewConversation,
   handleDeleteConversation,
+  laboratoryModalProps,
   conversations,
   currentConversation,
   currentModel,
@@ -103,19 +107,7 @@ export default function SidebarWithConversations({
 
       <div className="flex flex-col mt-auto">
         <InfoModal isFirstTime={isFirstTime} />
-        <Button
-          className="justify-start text-default-600"
-          startContent={
-            <Icon
-              className="text-default-600"
-              icon="solar:settings-minimalistic-line-duotone"
-              width={24}
-            />
-          }
-          variant="light"
-        >
-          Laboratory
-        </Button>
+        <LaboratoryModal {...laboratoryModalProps} />
       </div>
     </div>
   )

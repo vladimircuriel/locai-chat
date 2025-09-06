@@ -70,6 +70,10 @@ export default function ModelModal({ selectedModel, setModel, engineState }: Mod
                           ...model,
                           quantization: [quant],
                         })
+                        localStorage.setItem(
+                          'model',
+                          JSON.stringify({ ...model, quantization: [quant] }),
+                        )
                         onOpenChange()
                       }}
                     >

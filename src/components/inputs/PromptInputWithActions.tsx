@@ -72,45 +72,13 @@ export default function PromptInputWithActions({
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
-              if (!prompt && !engineState?.isReady) return
+              if ((!prompt && !engineState?.isReady) || engineState?.isGenerating) return
 
               handleMessageSend()
             }
           }}
           onValueChange={setPrompt}
         />
-        {/* <div className="flex w-full items-center justify-between gap-2 overflow-auto px-4 pb-4">
-          <div className="flex w-full gap-1 md:gap-3">
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:paperclip-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Attach
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:soundwave-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Voice Commands
-            </Button>
-            <Button
-              size="sm"
-              startContent={
-                <Icon className="text-default-500" icon="solar:notes-linear" width={18} />
-              }
-              variant="flat"
-            >
-              Templates
-            </Button>
-          </div>
-          <p className="text-tiny text-default-400 py-1">{prompt.length}/2000</p>
-        </div> */}
       </form>
     </div>
   )

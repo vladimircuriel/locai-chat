@@ -65,6 +65,14 @@ export default function InfoModal({ isFirstTime = false }: { isFirstTime?: boole
                     </li>
                   </ul>
                 </p>
+
+                <p>
+                  <strong>Default model: </strong>
+                  Qwen2-0.5B-Instruct, a very basic model that consumes minimal resources. For
+                  improved performance, consider selecting a more capable model from the top right
+                  corner.
+                </p>
+
                 <p>
                   <strong>Browser requirements: </strong>
                   LocAI relies on modern WebGPU support. Google Chrome (and Chromium-based browsers)

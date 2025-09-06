@@ -15,7 +15,23 @@ import type { Message } from '@lib/models/message.model'
 import type { Model } from '@lib/models/model.model'
 import isWebGPUSupported from '@lib/utils/gpu'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useWebLLM, type WebLLMConfig } from './useWebLLM'
+import { type Engine, useWebLLM, type WebLLMConfig } from './useWebLLM'
+
+export type LaboratoryModalPropsDTO = Readonly<{
+  stream: boolean
+  setStream: React.Dispatch<React.SetStateAction<boolean>>
+  temperature: number
+  setTemperature: React.Dispatch<React.SetStateAction<number>>
+  maxTokens: number
+  setMaxTokens: React.Dispatch<React.SetStateAction<number>>
+  topP: number
+  setTopP: React.Dispatch<React.SetStateAction<number>>
+  presencePenalty: number
+  setPresencePenalty: React.Dispatch<React.SetStateAction<number>>
+  frequencyPenalty: number
+  setFrequencyPenalty: React.Dispatch<React.SetStateAction<number>>
+  engineState: Engine | null
+}>
 
 export default function useIndexPage() {
   const STORAGE_KEY = 'lastConversationId'
@@ -26,28 +42,53 @@ export default function useIndexPage() {
   const [conversationMessages, setConversationMessages] = useState<Message[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [model, setModel] = useState<Model>({
-    id: 'Qwen2-0.5B-Instruct',
-    quantization: ['q0f16'],
-    origin: 'HuggingFace',
-    owner: 'meta',
-  })
-  const [stream, setStream] = useState<boolean>(true)
-  const [temperature, setTemperature] = useState<number>(0.8)
-  const [maxTokens, setMaxTokens] = useState<number>(512)
-  const [downloadProgress, setDownloadProgress] = useState<string>('')
+  const [model, setModel] = useState<Model>(
+    localStorage.getItem('model')
+      ? JSON.parse(localStorage.getItem('model')!)
+      : {
+          id: 'Qwen2-0.5B-Instruct',
+          quantization: ['q0f16'],
+          origin: 'HuggingFace',
+          owner: 'meta',
+        },
+  )
   const [webGPUSupported, setWebGPUSupported] = useState<boolean | null>(null)
+  const [downloadProgress, setDownloadProgress] = useState<string>('')
+
+  const [stream, setStream] = useState<boolean>(localStorage.getItem('stream') === 'true')
+  const [temperature, setTemperature] = useState<number>(
+    localStorage.getItem('temperature') ? parseFloat(localStorage.getItem('temperature')!) : 0.7,
+  )
+  const [maxTokens, setMaxTokens] = useState<number>(
+    localStorage.getItem('maxTokens') ? parseInt(localStorage.getItem('maxTokens')!) : 512,
+  )
+  const [presencePenalty, setPresencePenalty] = useState<number>(
+    localStorage.getItem('presencePenalty')
+      ? parseFloat(localStorage.getItem('presencePenalty')!)
+      : 0,
+  )
+  const [frequencyPenalty, setFrequencyPenalty] = useState<number>(
+    localStorage.getItem('frequencyPenalty')
+      ? parseFloat(localStorage.getItem('frequencyPenalty')!)
+      : 0,
+  )
+  const [topP, setTopP] = useState<number>(
+    localStorage.getItem('topP') ? parseFloat(localStorage.getItem('topP')!) : 1,
+  )
 
   const config = useMemo<WebLLMConfig>(
     () => ({
       stream,
       temperature,
+      top_p: topP,
+      presence_penalty: presencePenalty,
+      frequency_penalty: frequencyPenalty,
       maxTokens,
       initProgressCallback: (r) => {
         setDownloadProgress(r.text)
       },
     }),
-    [stream, temperature, maxTokens],
+    [stream, temperature, topP, presencePenalty, frequencyPenalty, maxTokens],
   )
 
   const handleSetCurrentConversation = useCallback(
@@ -195,6 +236,22 @@ export default function useIndexPage() {
     checkWebGPUSupport()
   }, [])
 
+  const laboratoryModalProps: LaboratoryModalPropsDTO = {
+    stream,
+    setStream,
+    temperature,
+    setTemperature,
+    maxTokens,
+    setMaxTokens,
+    topP,
+    setTopP,
+    presencePenalty,
+    setPresencePenalty,
+    frequencyPenalty,
+    setFrequencyPenalty,
+    engineState,
+  }
+
   return {
     amountOfConversations,
     conversations,
@@ -207,15 +264,11 @@ export default function useIndexPage() {
     handleDeleteConversation,
     sendMessagesToLLM,
     setModel,
-    setStream,
+    laboratoryModalProps,
     currentConversation,
     conversationMessages,
     downloadProgress,
     scrollRef,
-    temperature,
-    setTemperature,
-    maxTokens,
-    setMaxTokens,
     model,
     engineState,
     webGPUSupported,
