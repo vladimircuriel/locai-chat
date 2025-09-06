@@ -1,10 +1,10 @@
-import type { PromptSuggestion } from '@lib/constants/suggestions.contants'
+import type { PromptSuggestion } from '@lib/constants/suggestions.constants'
 import { useState } from 'react'
 
 type UsePromptInputFullLineWithBottomActionsProps = Readonly<{
   setAmountOfConversations: React.Dispatch<React.SetStateAction<number>>
   handleSetCurrentConversation: (conversationId: string) => Promise<void>
-  handleUserSendMessage: (message: string) => void
+  handleUserSendMessage: (message: string, conversationId: string) => void
 }>
 
 export default function usePromptInputFullLineWithBottomActions({
@@ -21,7 +21,7 @@ export default function usePromptInputFullLineWithBottomActions({
   const handleMessageSend = async (conversationId: string) => {
     setAmountOfConversations((prev: number) => prev + 1)
     await handleSetCurrentConversation(conversationId)
-    handleUserSendMessage(prompt)
+    handleUserSendMessage(prompt, conversationId)
     setPrompt('')
   }
 

@@ -1,3 +1,4 @@
+import { addToast } from '@heroui/react'
 import { getMessagesByConversation, saveMessage } from '@lib/db/message.db'
 import type { Conversation } from '@lib/models/conversation.model'
 import type { Message } from '@lib/models/message.model'
@@ -62,23 +63,12 @@ export function useWebLLM({
         await CreateMLCEngine(selectedModel, {
           initProgressCallback: memoConfig.initProgressCallback,
         })
-        console.log('MLC Engine created')
-
         if (!active) return
-
-        console.log('Initializing Service Worker Engine...')
 
         const workerEngine = await CreateMLCEngine(selectedModel)
-        console.log('Service Worker Engine created')
-        console.log('Worker Engine:', workerEngine)
-        console.log('active', active)
         if (!active) return
 
-        console.log('Service Worker Engine initialized')
-
         engineRef.current = workerEngine as MLCEngine
-
-        console.log('Engine initialized and ready:', workerEngine)
 
         setEngineState({
           motor: workerEngine,
@@ -87,10 +77,22 @@ export function useWebLLM({
           isDownloading: false,
           isGenerating: false,
         })
+
+        addToast({
+          title: 'Model loaded',
+          description: `The model ${selectedModel} has been loaded successfully.`,
+          color: 'success',
+          severity: 'success',
+        })
       } catch {
-        console.error('Failed to initialize the engine')
         if (!active) return
         setEngineState((prev) => (prev ? { ...prev, isDownloading: false } : prev))
+        addToast({
+          title: 'Error',
+          description: 'Failed to load the model. Please try again.',
+          color: 'danger',
+          severity: 'danger',
+        })
       }
     }
 
@@ -101,17 +103,13 @@ export function useWebLLM({
   }, [selectedModel, memoConfig])
 
   const sendMessagesToLLM = useCallback(
-    async (message: Message, onChunk?: (delta: string) => void) => {
-      console.log('sendMessagesToLLM called with messages:', message)
-
+    async (message: Message, conversationId: string, onChunk?: (delta: string) => void) => {
       const engine = engineRef.current
       if (!engine) throw new Error('Engine not initialized')
       setEngineState((prev) => prev && { ...prev, isGenerating: true })
 
-      console.log('Engine initialized:', engine)
-
-      const conversationMessages = conversation?.id
-        ? await getMessagesByConversation(conversation.id)
+      const conversationMessages = conversationId
+        ? await getMessagesByConversation(conversationId)
         : []
 
       const chatMessages: ChatCompletionMessageParam[] = [
@@ -130,8 +128,6 @@ export function useWebLLM({
 
         { role: 'user', content: message.text } as ChatCompletionMessageParam,
       ]
-
-      console.log('Chat messages prepared:', chatMessages)
 
       const baseReq = {
         messages: chatMessages,
@@ -154,20 +150,16 @@ export function useWebLLM({
         setEngineState((prev) => prev && { ...prev, isGenerating: false })
         return result
       } else {
-        console.log('Sending request to engine:', baseReq)
-
         const res = await engine.chat.completions.create(baseReq)
+
         const content = res.choices[0].message.content
         setEngineState((prev) => prev && { ...prev, isGenerating: false })
-        console.log('Received response from engine:', content)
 
-        if (!conversation) return content
-
-        console.log('Saving message to conversation:', conversation.id)
+        if (!conversationId) return content
 
         const message: Message = {
           id: crypto.randomUUID(),
-          conversationId: conversation.id,
+          conversationId: conversationId,
           text: content ?? 'No response',
           user: 'bot',
           favorite: false,
@@ -176,7 +168,6 @@ export function useWebLLM({
         }
 
         await saveMessage(message)
-
         handleSendMessageToCurrentConversation(message)
       }
     },

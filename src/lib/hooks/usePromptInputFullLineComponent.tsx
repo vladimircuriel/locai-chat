@@ -1,7 +1,5 @@
 import { saveConversation } from '@lib/db/conversation.db'
-import { saveMessage } from '@lib/db/message.db'
 import type { Conversation } from '@lib/models/conversation.model'
-import type { Message } from '@lib/models/message.model'
 import React, { useCallback, useState } from 'react'
 
 export type usePromptInputProps = Readonly<{
@@ -26,27 +24,14 @@ export default function usePromptInputFullLineComponent({
 
     const conversation: Conversation = {
       id: crypto.randomUUID(),
-      title: prompt.slice(0, 40),
+      title: prompt,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
 
     const savedConversation = await saveConversation(conversation)
-
-    const message: Message = {
-      id: crypto.randomUUID(),
-      conversationId: savedConversation.id,
-      text: prompt,
-      user: 'user',
-      favorite: false,
-      timestamp: new Date(),
-      status: 'sent',
-    }
-
-    await saveMessage(message)
-
-    handleMessageSend(savedConversation.id)
     handleAddConversation(conversation)
+    handleMessageSend(savedConversation.id)
 
     setAssets([])
 

@@ -12,21 +12,28 @@ import {
 } from '@lib/db/message.db'
 import type { Conversation } from '@lib/models/conversation.model'
 import type { Message } from '@lib/models/message.model'
+import type { Model } from '@lib/models/model.model'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useWebLLM, type WebLLMConfig } from './useWebLLM'
 
 export default function useIndexPage() {
+  const STORAGE_KEY = 'lastConversationId'
   const [amountOfConversations, setAmountOfConversations] = useState<number>(0)
   const [currentConversation, setCurrentConversation] = useState<Conversation | undefined>(
     undefined,
   )
   const [conversationMessages, setConversationMessages] = useState<Message[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
-  const [model, setModel] = useState('gemma-2b-it-q4f16_1-MLC')
-  const [stream, setStream] = useState(false)
-  const [temperature, setTemperature] = useState(0.8)
-  const [maxTokens, setMaxTokens] = useState(512)
-  const [downloadProgress, setDownloadProgress] = useState('')
+  const [model, setModel] = useState<Model>({
+    id: 'Qwen2-0.5B-Instruct',
+    quantization: ['q0f16'],
+    origin: 'HuggingFace',
+    owner: 'meta',
+  })
+  const [stream, setStream] = useState<boolean>(false)
+  const [temperature, setTemperature] = useState<number>(0.8)
+  const [maxTokens, setMaxTokens] = useState<number>(512)
+  const [downloadProgress, setDownloadProgress] = useState<string>('')
 
   const config = useMemo<WebLLMConfig>(
     () => ({
@@ -46,12 +53,13 @@ export default function useIndexPage() {
       const conversation = await getConversationById(conversationId)
       setCurrentConversation(conversation)
     },
-
     [currentConversation],
   )
 
   const handleAddConversation = useCallback((conversation: Conversation) => {
+    setCurrentConversation(conversation)
     setConversations((prev) => [conversation, ...prev])
+    setAmountOfConversations((prev) => prev + 1)
   }, [])
 
   const handleSendMessageToCurrentConversation = useCallback((message: Message) => {
@@ -59,19 +67,17 @@ export default function useIndexPage() {
   }, [])
 
   const { engineState, sendMessagesToLLM } = useWebLLM({
-    selectedModel: model,
+    selectedModel: `${model.id}-${model.quantization[0]}-MLC`,
     config,
     conversation: currentConversation,
     handleSendMessageToCurrentConversation,
   })
 
   const handleUserSendMessage = useCallback(
-    async (text: string) => {
-      if (!currentConversation) return
-
+    async (text: string, conversationId: string) => {
       const message: Message = {
         id: crypto.randomUUID(),
-        conversationId: currentConversation.id,
+        conversationId: conversationId,
         text,
         user: 'user',
         favorite: false,
@@ -81,9 +87,9 @@ export default function useIndexPage() {
 
       await saveMessage(message)
       handleSendMessageToCurrentConversation(message)
-      await sendMessagesToLLM(message)
+      await sendMessagesToLLM(message, conversationId)
     },
-    [currentConversation, handleSendMessageToCurrentConversation, sendMessagesToLLM],
+    [handleSendMessageToCurrentConversation, sendMessagesToLLM],
   )
 
   const handleCreateNewConversation = useCallback(() => {
@@ -113,6 +119,30 @@ export default function useIndexPage() {
     },
     [currentConversation?.id],
   )
+
+  useEffect(() => {
+    async function loadLastConversation() {
+      const lastId = localStorage.getItem(STORAGE_KEY)
+      if (!lastId) return
+
+      try {
+        const conversation = await getConversationById(lastId)
+        setCurrentConversation(conversation)
+      } catch {
+        localStorage.removeItem(STORAGE_KEY)
+      }
+    }
+
+    loadLastConversation()
+  }, [])
+
+  useEffect(() => {
+    if (currentConversation?.id) {
+      localStorage.setItem(STORAGE_KEY, currentConversation.id)
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }, [currentConversation])
 
   useEffect(() => {
     async function fetchConversationMessages() {
@@ -156,9 +186,11 @@ export default function useIndexPage() {
     handleAddConversation,
     handleDeleteConversation,
     sendMessagesToLLM,
+    setModel,
     currentConversation,
     conversationMessages,
     downloadProgress,
+    model,
     engineState,
   }
 }
