@@ -47,10 +47,14 @@ export default function ModelModal({ selectedModel, setModel, engineState }: Mod
                   onChange={(e) => handleSearch(e.target.value)}
                 />
                 {engineState?.isGenerating || engineState?.isDownloading ? (
-                  <Chip variant="dot" color="warning" className="text-sm text-white">
-                    You cannot change the model while the current model is downloading or
-                    generating.
-                  </Chip>
+                  <div className="max-w-[340px] lg:max-w-full overflow-scroll">
+                    <Chip variant="dot" color="warning" className="text-sm text-white">
+                      <span className="truncate">
+                        You cannot change the model while the current model is downloading or
+                        generating.
+                      </span>
+                    </Chip>
+                  </div>
                 ) : null}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4 max-h-96 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   {models.map((model) => (
@@ -85,20 +89,22 @@ export default function ModelModal({ selectedModel, setModel, engineState }: Mod
                 </div>
               </ModalBody>
               <ModalFooter>
-                <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col items-center justify-between w-full gap-y-4 lg:flex-row">
                   <Chip
                     variant="dot"
                     color="primary"
                     className="text-sm text-white border-gray-600"
                   >
-                    Selected model: {selectedModel?.id}
+                    <span className="block truncate">Selected model: {selectedModel?.id}</span>
                   </Chip>
                   <Chip
                     variant="dot"
                     color="success"
                     className="text-sm text-white border-gray-600"
                   >
-                    {models.length} model{models.length !== 1 ? 's' : ''} found.
+                    <span className="block truncate">
+                      {models.length} model{models.length !== 1 ? 's' : ''} found.
+                    </span>
                   </Chip>
                 </div>
               </ModalFooter>

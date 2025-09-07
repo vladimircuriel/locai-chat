@@ -39,7 +39,7 @@ export default function Index() {
         <div className="flex h-screen max-h-[calc(100vh-140px)] w-full">
           <div className="flex items-center justify-center w-full h-full">
             <div className="flex flex-col items-center w-full max-w-xl gap-8">
-              <h1 className="text-3xl font-bold leading-9 text-default-foreground sr-only">
+              <h1 className="text-3xl font-bold leading-9 sr-only text-default-foreground">
                 LocAI Chat
               </h1>
               <ImagoType width={180} height={46} fill="none" />
@@ -57,7 +57,7 @@ export default function Index() {
         </div>
       )}
       {amountOfConversations > 0 && (
-        <div className="w-full max-w-full h-dvh">
+        <div className="w-full max-w-full h-dvh overflow-clip">
           <SidebarWithConversations
             setAmountOfConversations={setAmountOfConversations}
             handleSetCurrentConversation={handleSetCurrentConversation}
@@ -90,12 +90,14 @@ export default function Index() {
                   ))}
                 </ScrollShadow>
               )}
-              <div className="flex flex-col max-w-full gap-2 mt-auto">
+              <div className="flex flex-col max-w-full gap-2 overflow-scroll">
                 {engineState?.isDownloading && (
                   <Chip color="success" variant="dot" className="mb-2">
-                    {downloadProgress.slice(0, 140)}...
+                    <span className="block truncate">{downloadProgress.slice(0, 140)}...</span>
                   </Chip>
                 )}
+              </div>
+              <div className="flex flex-col max-w-full mt-4">
                 <PromptInputWithActions
                   currentConversation={currentConversation}
                   handleSetCurrentConversation={handleSetCurrentConversation}
@@ -103,9 +105,6 @@ export default function Index() {
                   handleAddConversation={handleAddConversation}
                   engineState={engineState}
                 />
-                <p className="px-2 font-medium leading-5 text-center text-small text-default-500">
-                  WebLLM Models can make mistakes. Please verify critical information.
-                </p>
               </div>
             </div>
           </SidebarWithConversations>

@@ -305,7 +305,9 @@ export default function LaboratoryModal(props: LaboratoryModalPropsDTO) {
                     color="success"
                     className="text-sm text-white border-gray-600"
                   >
-                    Cannot adjust settings while the model is loading or generating.
+                    <span className="block truncate">
+                      Cannot adjust settings while the model is loading or generating.
+                    </span>
                   </Chip>
                 ) : null}
               </ModalBody>
