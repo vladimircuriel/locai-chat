@@ -36,7 +36,16 @@ export default function Index() {
   }
 
   if (isMobile) {
-    return <MobileModal isMobile={isMobile} />
+    return (
+      <div className="w-full max-w-full h-dvh overflow-clip">
+        <div className="relative flex flex-col h-full px-4">
+          <div className="flex flex-col items-center justify-center h-full gap-10">
+            <ImagoType width={180} height={46} fill="none" />
+            <MobileModal isMobile={isMobile} />
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
