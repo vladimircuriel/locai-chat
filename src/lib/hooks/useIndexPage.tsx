@@ -55,7 +55,10 @@ export default function useIndexPage() {
   const [webGPUSupported, setWebGPUSupported] = useState<boolean | null>(null)
   const [downloadProgress, setDownloadProgress] = useState<string>('')
 
-  const [stream, setStream] = useState<boolean>(localStorage.getItem('stream') === 'true')
+  const [stream, setStream] = useState<boolean>(() => {
+    const stored = localStorage.getItem('stream')
+    return stored === null ? true : stored === 'true'
+  })
   const [temperature, setTemperature] = useState<number>(
     localStorage.getItem('temperature') ? parseFloat(localStorage.getItem('temperature')!) : 0.7,
   )
