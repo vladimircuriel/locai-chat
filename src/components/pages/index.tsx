@@ -2,6 +2,7 @@ import ImagoType from '@components/brand/ImagoType'
 import MessagingChatMessage from '@components/card/MessageCard'
 import PromptInputFullLineWithBottomActions from '@components/inputs/PromptInputFullLineWithBottomActions'
 import PromptInputWithActions from '@components/inputs/PromptInputWithActions'
+import MobileModal from '@components/modal/MobileModal'
 import NoWebGPUModal from '@components/modal/NoWebGPUModal'
 import SidebarWithConversations from '@components/navigation/sidebar/SidebarWithConversations'
 import { Chip } from '@heroui/chip'
@@ -27,10 +28,15 @@ export default function Index() {
     setModel,
     downloadProgress,
     webGPUSupported,
+    isMobile,
   } = useIndexPage()
 
   if (!webGPUSupported) {
     return <NoWebGPUModal isOpen={!webGPUSupported} />
+  }
+
+  if (isMobile) {
+    return <MobileModal isMobile={isMobile} />
   }
 
   return (

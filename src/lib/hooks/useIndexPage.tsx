@@ -54,7 +54,6 @@ export default function useIndexPage() {
   )
   const [webGPUSupported, setWebGPUSupported] = useState<boolean | null>(null)
   const [downloadProgress, setDownloadProgress] = useState<string>('')
-
   const [stream, setStream] = useState<boolean>(() => {
     const stored = localStorage.getItem('stream')
     return stored === null ? true : stored === 'true'
@@ -93,6 +92,11 @@ export default function useIndexPage() {
     }),
     [stream, temperature, topP, presencePenalty, frequencyPenalty, maxTokens],
   )
+
+  const isMobile = useMemo(() => {
+    if (typeof window === 'undefined') return false
+    return /Mobi|Android/i.test(navigator.userAgent)
+  }, [])
 
   const handleSetCurrentConversation = useCallback(
     async (conversationId: string) => {
@@ -275,5 +279,6 @@ export default function useIndexPage() {
     model,
     engineState,
     webGPUSupported,
+    isMobile,
   }
 }
