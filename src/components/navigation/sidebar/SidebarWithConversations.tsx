@@ -1,3 +1,4 @@
+import ImagoType from '@components/brand/ImagoType'
 import ChatOptionsDropDown from '@components/dropdown/ChatOptionsDropDown'
 import InfoModal from '@components/modal/InfoModal'
 import LaboratoryModal from '@components/modal/LaboratoryModal'
@@ -15,7 +16,6 @@ import type { Conversation } from '@lib/models/conversation.model'
 import type { Model } from '@lib/models/model.model'
 import type React from 'react'
 import SidebarDrawer from './SidebarDrawer'
-import ImagoType from '@components/brand/ImagoType'
 
 type SidebarWithConversationsProps = Readonly<{
   children?: React.ReactNode
