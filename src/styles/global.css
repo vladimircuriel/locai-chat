@@ -13,6 +13,8 @@
   display: none;
 }
 
-html {
-  overflow-y: hidden;
+@media (min-width: 1024px) {
+  html {
+    overflow-y: hidden;
+  }
 }
