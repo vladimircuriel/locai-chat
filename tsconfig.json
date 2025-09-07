@@ -19,6 +19,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
       "@lib/*": [
         "src/lib/*"
       ],

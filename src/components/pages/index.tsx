@@ -1,3 +1,4 @@
+import ImagoType from '@components/brand/ImagoType'
 import MessagingChatMessage from '@components/card/MessageCard'
 import PromptInputFullLineWithBottomActions from '@components/inputs/PromptInputFullLineWithBottomActions'
 import PromptInputWithActions from '@components/inputs/PromptInputWithActions'
@@ -38,7 +39,10 @@ export default function Index() {
         <div className="flex h-screen max-h-[calc(100vh-140px)] w-full">
           <div className="flex items-center justify-center w-full h-full">
             <div className="flex flex-col items-center w-full max-w-xl gap-8">
-              <h1 className="text-3xl font-bold leading-9 text-default-foreground">LocAI Chat</h1>
+              <h1 className="text-3xl font-bold leading-9 text-default-foreground sr-only">
+                LocAI Chat
+              </h1>
+              <ImagoType width={180} height={46} fill="none" />
               <div className="flex flex-col w-full gap-4">
                 <PromptInputFullLineWithBottomActions
                   setAmountOfConversations={setAmountOfConversations}
@@ -73,7 +77,7 @@ export default function Index() {
             <div className="relative flex flex-col h-full px-4">
               {!currentConversation && (
                 <div className="flex flex-col items-center justify-center h-full gap-10">
-                  <div className="flex rounded-full bg-foreground">ACME IA</div>
+                  <ImagoType width={180} height={46} fill="none" />
                 </div>
               )}
               {conversationMessages.length > 0 && (

@@ -15,6 +15,7 @@ import type { Conversation } from '@lib/models/conversation.model'
 import type { Model } from '@lib/models/model.model'
 import type React from 'react'
 import SidebarDrawer from './SidebarDrawer'
+import ImagoType from '@components/brand/ImagoType'
 
 type SidebarWithConversationsProps = Readonly<{
   children?: React.ReactNode
@@ -54,11 +55,8 @@ export default function SidebarWithConversations({
 
   const content = (
     <div className="relative flex flex-col flex-1 h-full p-6 w-72">
-      <div className="flex items-center gap-2 px-2">
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-foreground">
-          {/* <AcmeIcon className="text-background" /> */}
-        </div>
-        <span className="text-base font-bold leading-6 uppercase text-foreground">Acme AI</span>
+      <div className="flex items-center justify-center gap-2 px-2">
+        <ImagoType width={150} height={38} fill="none" />
       </div>
 
       <Spacer y={8} />
