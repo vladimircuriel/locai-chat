@@ -60,7 +60,7 @@ export default function Index() {
               <ImagoType width={180} height={46} fill="none" />
               <div className="flex flex-col max-w-full gap-2 overflow-scroll">
                 {engineState?.isDownloading && (
-                  <Chip color="success" variant="dot" className="mb-2">
+                  <Chip color="success" variant="dot">
                     <span className="block truncate">{downloadProgress.slice(0, 140)}...</span>
                   </Chip>
                 )}

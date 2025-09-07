@@ -51,13 +51,12 @@ export default function usePromptInputFullLineComponent({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (currentModel && (!currentModel.isReady || currentModel.isGenerating)) {
-        e.preventDefault()
-        return
-      }
-
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault()
+
+        if (currentModel && (!currentModel.isReady || currentModel.isGenerating)) {
+          return
+        }
 
         handleSubmit()
       }
