@@ -1,0 +1,15 @@
+node_modules
+dist
+.pnpm-store
+.git
+.gitignore
+Dockerfile
+*.log
+.vscode
+.next
+*.md
+*.ts
+test/
+public/videos/
+biome.json
+README.md
