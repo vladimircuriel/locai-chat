@@ -1,12 +1,12 @@
 ---
-import IndexPage from '@components/pages/index'
-import { ToastProvider } from '@heroui/react'
-import Layout from '@layouts/Layout.astro'
+import IndexPage from "@components/pages/index";
+import { ToastProvider } from "@heroui/react";
+import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout
 	title="LocAI Chat"
-	description="LocAI Chat - Offline Local Multi-model ChatBot with AI"
+	description="LocAI Chat - Offline Local Multi-Model ChatBot with AI"
 >
 	<ToastProvider client:only="react" />
 	<IndexPage client:only="react" />
