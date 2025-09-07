@@ -1,18 +1,21 @@
 import { saveConversation } from '@lib/db/conversation.db'
 import type { Conversation } from '@lib/models/conversation.model'
 import React, { useCallback, useState } from 'react'
+import type { Engine } from './useWebLLM'
 
 export type usePromptInputProps = Readonly<{
   prompt: string
   setPrompt: React.Dispatch<React.SetStateAction<string>>
   handleMessageSend: (conversationId: string) => void
   handleAddConversation: (conversation: Conversation) => void
+  currentModel: Engine | null
 }>
 
 export default function usePromptInputFullLineComponent({
   prompt,
   handleMessageSend,
   handleAddConversation,
+  currentModel,
 }: usePromptInputProps) {
   const [assets, setAssets] = useState<string[]>([])
 
@@ -48,13 +51,18 @@ export default function usePromptInputFullLineComponent({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (currentModel && (!currentModel.isReady || currentModel.isGenerating)) {
+        e.preventDefault()
+        return
+      }
+
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault()
 
         handleSubmit()
       }
     },
-    [handleSubmit],
+    [handleSubmit, currentModel],
   )
 
   const handlePaste = useCallback(async (e: React.ClipboardEvent) => {

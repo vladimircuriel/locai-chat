@@ -65,6 +65,7 @@ export default function Index() {
                   handleSetCurrentConversation={handleSetCurrentConversation}
                   handleUserSendMessage={handleUserSendMessage}
                   handleAddConversation={handleAddConversation}
+                  currentModel={engineState}
                 />
               </div>
             </div>

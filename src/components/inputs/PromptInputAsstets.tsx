@@ -33,7 +33,7 @@ const PromptInputAssets = ({ assets, onRemoveAsset }: PromptInputAssetsProps) =>
         >
           <Image
             alt="uploaded image"
-            className="rounded-small border-small border-default-200/50 h-14 w-14 object-cover"
+            className="object-cover rounded-small border-small border-default-200/50 h-14 w-14"
             src={asset}
           />
         </Badge>

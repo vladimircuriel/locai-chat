@@ -1,11 +1,10 @@
 import { Button } from '@heroui/button'
 import { Form } from '@heroui/form'
 import { cn } from '@heroui/react'
-import { Tooltip } from '@heroui/tooltip'
 import { Icon } from '@iconify/react'
 import usePromptInputFullLineComponent from '@lib/hooks/usePromptInputFullLineComponent'
+import type { Engine } from '@lib/hooks/useWebLLM'
 import type { Conversation } from '@lib/models/conversation.model'
-import { VisuallyHidden } from '@react-aria/visually-hidden'
 import PromptInput from './PromptInput'
 import PromptInputAssets from './PromptInputAsstets'
 
@@ -14,6 +13,7 @@ export interface PromptInputProps {
   setPrompt: React.Dispatch<React.SetStateAction<string>>
   handleMessageSend: (conversationId: string) => void
   handleAddConversation: (conversation: Conversation) => void
+  currentModel: Engine | null
 }
 
 export default function PromptInputFullLineComponent({
@@ -21,26 +21,20 @@ export default function PromptInputFullLineComponent({
   setPrompt,
   handleMessageSend,
   handleAddConversation,
+  currentModel,
 }: PromptInputProps) {
-  const {
-    assets,
-    setAssets,
-    inputRef,
-    fileInputRef,
-    handleKeyDown,
-    handlePaste,
-    handleFileUpload,
-    onSubmit,
-  } = usePromptInputFullLineComponent({
-    prompt,
-    setPrompt,
-    handleMessageSend,
-    handleAddConversation,
-  })
+  const { assets, setAssets, inputRef, handleKeyDown, handlePaste, onSubmit } =
+    usePromptInputFullLineComponent({
+      prompt,
+      setPrompt,
+      handleMessageSend,
+      handleAddConversation,
+      currentModel,
+    })
 
   return (
     <Form
-      className="rounded-medium bg-neutral-100 dark:bg-default-100 flex w-full flex-col items-start gap-0"
+      className="flex flex-col items-start w-full gap-0 rounded-medium bg-neutral-100 dark:bg-default-100"
       validationBehavior="native"
       onSubmit={onSubmit}
     >
@@ -72,8 +66,8 @@ export default function PromptInputFullLineComponent({
         onPaste={handlePaste}
         onValueChange={setPrompt}
       />
-      <div className="flex w-full flex-row items-center justify-between px-3 pb-3">
-        <Tooltip showArrow content="Attach Files">
+      <div className="flex flex-row items-center justify-end w-full px-3 pb-3">
+        {/* <Tooltip showArrow content="Attach Files">
           <Button
             isIconOnly
             radius="full"
@@ -92,11 +86,11 @@ export default function PromptInputFullLineComponent({
               />
             </VisuallyHidden>
           </Button>
-        </Tooltip>
+        </Tooltip> */}
         <Button
           isIconOnly
-          color={!prompt ? 'default' : 'primary'}
-          isDisabled={!prompt}
+          color={!prompt ? 'default' : 'secondary'}
+          isDisabled={!prompt || !currentModel?.isReady || currentModel?.isGenerating}
           radius="full"
           size="sm"
           type="submit"
