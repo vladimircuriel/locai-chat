@@ -91,6 +91,7 @@ export default function PromptInputFullLineComponent({
           isIconOnly
           color={!prompt ? 'default' : 'secondary'}
           isDisabled={!prompt || !currentModel?.isReady || currentModel?.isGenerating}
+          isLoading={!currentModel?.isReady || currentModel?.isGenerating}
           radius="full"
           size="sm"
           type="submit"

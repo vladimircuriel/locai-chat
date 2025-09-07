@@ -58,6 +58,13 @@ export default function Index() {
                 LocAI Chat
               </h1>
               <ImagoType width={180} height={46} fill="none" />
+              <div className="flex flex-col max-w-full gap-2 overflow-scroll">
+                {engineState?.isDownloading && (
+                  <Chip color="success" variant="dot" className="mb-2">
+                    <span className="block truncate">{downloadProgress.slice(0, 140)}...</span>
+                  </Chip>
+                )}
+              </div>
               <div className="flex flex-col w-full gap-4">
                 <PromptInputFullLineWithBottomActions
                   setAmountOfConversations={setAmountOfConversations}
