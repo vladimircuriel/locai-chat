@@ -7,6 +7,8 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://locai.o5d.dev",
+	base: "/",
   vite: {
     plugins: [tailwindcss()],
     build: {
@@ -21,7 +23,6 @@ export default defineConfig({
       },
     },
   },
-
   integrations: [react(),
     VitePWA({
       registerType: 'autoUpdate',
