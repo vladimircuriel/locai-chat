@@ -19,21 +19,9 @@
       "@components/*": [
         "src/components/*"
       ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
       "@lib/*": [
         "src/lib/*"
       ],
-      "@models/*": [
-        "src/lib/muck/models/*"
-      ],
-      "@utils/*": [
-        "src/lib/utils/*"
-      ],
-      "@public/*": [
-        "public/*"
-      ]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
