@@ -15,7 +15,7 @@
     "@heroui/react": "2.8.3",
     "@mlc-ai/web-llm": "0.2.79",
     "@react-aria/visually-hidden": "3.8.27",
-    "@tailwindcss/postcss": "4.1.12",
+    "@tailwindcss/postcss": "4.1.13",
     "@tailwindcss/vite": "4.1.13",
     "@types/react": "19.1.12",
     "@types/react-dom": "19.1.9",
