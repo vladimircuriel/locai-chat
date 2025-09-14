@@ -8,7 +8,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
   site: "https://locai.o5d.dev",
-	base: "/",
+  base: "/",
   vite: {
     plugins: [tailwindcss()],
     build: {
