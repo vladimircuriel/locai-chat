@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.3",
-    "@iconify/react": "6.0.1",
+    "@iconify/react": "6.0.2",
     "@types/react-syntax-highlighter": "15.5.13"
   },
   "packageManager": "pnpm@10.14.0"
