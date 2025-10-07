@@ -12,8 +12,8 @@ importers:
         specifier: 4.4.0
         version: 4.4.0(@types/node@24.7.0)(@types/react-dom@19.1.9(@types/react@19.1.12))(@types/react@19.1.12)(jiti@2.5.1)(lightningcss@1.30.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(terser@5.44.0)
       '@fontsource-variable/onest':
-        specifier: 5.2.9
-        version: 5.2.9
+        specifier: 5.2.11
+        version: 5.2.11
       '@heroui/react':
         specifier: 2.8.4
         version: 2.8.4(@types/react@19.1.12)(framer-motion@12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(tailwindcss@4.1.13)
@@ -845,8 +845,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fontsource-variable/onest@5.2.9':
-    resolution: {integrity: sha512-yMYrvMibKYTckL2vxeC+Z9buANY1GNgwG8oMHx3I7sjqxeOmHufHsI+Bbt3kYSoM0ominSr3qgAjMiFNWog6Uw==}
+  '@fontsource-variable/onest@5.2.11':
+    resolution: {integrity: sha512-knJww1KxK4g66+qu90q3CPBvl4zhL5oDRi3/JMkYMmlhW3OgyRgT4MMfgd6jg2lvho7bLPAXfsYPh59h0yzwUA==}
 
   '@formatjs/ecma402-abstract@2.3.4':
     resolution: {integrity: sha512-qrycXDeaORzIqNhBOx0btnhpD1c+/qFIHAN9znofuMJX6QBwtbrmlpWfD4oiUUD2vJUOIYFA/gYtg2KAMGG7sA==}
@@ -5439,7 +5439,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.10':
     optional: true
 
-  '@fontsource-variable/onest@5.2.9': {}
+  '@fontsource-variable/onest@5.2.11': {}
 
   '@formatjs/ecma402-abstract@2.3.4':
     dependencies:
