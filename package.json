@@ -10,7 +10,7 @@
     "biome": "biome check --write"
   },
   "dependencies": {
-    "@astrojs/react": "4.4.0",
+    "@astrojs/react": "4.4.1",
     "@fontsource-variable/onest": "5.2.11",
     "@heroui/react": "2.8.4",
     "@mlc-ai/web-llm": "0.2.79",
